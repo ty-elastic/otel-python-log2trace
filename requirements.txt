@@ -6,4 +6,3 @@ opentelemetry-instrumentation-requests
 opentelemetry-instrumentation-logging
 
 python-dateutil
-csv

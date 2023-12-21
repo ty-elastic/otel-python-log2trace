@@ -1,8 +1,7 @@
 import logging
 import requests
 import random
-import dateutil.parser
-import csv
+import time
 
 import otel
 
@@ -65,39 +64,10 @@ def do_work():
             # call into child function which is instrumented
             do_more_work()
 
-# this is a trivial example of reading audit log lines and generating traces
-def log_to_trace(path):
 
-    # pretend we have a csv file formatted like this:
-    # start_timestamp, end_timestamp, function_name, result, attribute_key, attribute_value
-
-    # you could do something like this
-    with open(path, newline='') as csvfile:
-        reader = csv.reader(csvfile, delimiter=',')
-        for transaction in reader:
-            print(transaction)
-            start_timestamp = int(dateutil.parser.parse(transaction[0]).timestamp())*10**9
-            end_timestamp = int(dateutil.parser.parse(transaction[1]).timestamp())*10**9
-            function_name = transaction[2]
-            result = transaction[3]
-            attribute_key = transaction[4]
-            attribute_value = transaction[5]
-
-            with tracer.start_as_current_span(function_name, start_time=start_timestamp, end_on_exit=False) as span:
-                span.set_attribute(attribute_key, attribute_value)
-                if result == "OK":
-                    span.set_status(Status(StatusCode.OK))
-                else:
-                    span.set_status(Status(StatusCode.ERROR))
-                span.end(end_timestamp)
-
-
-log_to_trace('trace.csv')
-
-# test traditional spans
-# for x in range(0, 10):
-#     do_work()
-#     time.sleep(1)
+while True:
+    do_work()
+    time.sleep(1)
 
 
 
