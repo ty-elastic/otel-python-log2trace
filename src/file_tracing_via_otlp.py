@@ -4,6 +4,8 @@ import time
 import dateutil.parser
 import csv
 
+from google.protobuf import json_format
+
 def gen_synthetic_trace(*, serviceName, traceId, spanId, parentSpanId, spanName, startTimeUnixNano, endTimeUnixNano, spanKind, spanAttributes, statusCode):
     return {
       "resourceSpans": [
@@ -83,9 +85,8 @@ def log_to_trace(path):
                                         spanName=spanName, startTimeUnixNano=startTimeUnixNano, endTimeUnixNano=endTimeUnixNano, spanKind=2,
                                         spanAttributes=spanAttributes, statusCode=statusCode)
 
-            r = requests.post(f"{os.getenv('OTEL_EXPORTER_OTLP_JSON_HTTP_ENDPOINT')}/v1/traces", json=trace)
+            r = requests.post(f"{os.getenv('OTEL_EXPORTER_OTLP_HTTP_ENDPOINT')}/v1/traces", json=trace)
             print(r)
             time.sleep(1)
 
 log_to_trace('data/trace.csv')
-

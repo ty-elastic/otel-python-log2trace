@@ -1,10 +1,10 @@
 
 # for HTTP1.1
-from opentelemetry.exporter.otlp.proto.http.trace_exporter import OTLPSpanExporter
-from opentelemetry.exporter.otlp.proto.http.metric_exporter import OTLPMetricExporter
+# from opentelemetry.exporter.otlp.proto.http.trace_exporter import OTLPSpanExporter
+# from opentelemetry.exporter.otlp.proto.http.metric_exporter import OTLPMetricExporter
 # for HTTP2
-# from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
-# from opentelemetry.exporter.otlp.proto.grpc.metric_exporter import OTLPMetricExporter
+from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
+from opentelemetry.exporter.otlp.proto.grpc.metric_exporter import OTLPMetricExporter
 
 from opentelemetry import trace
 from opentelemetry.sdk.trace import TracerProvider
@@ -38,7 +38,7 @@ def init_otel_logging():
     LoggingInstrumentor().instrument(set_logging_format=True)
 
 def init_otel_tracing(resources):
-    provider = TracerProvider()#resource=Resource.create(resources))
+    provider = TracerProvider(resource=Resource.create(resources))
     processor = BatchSpanProcessor(OTLPSpanExporter())
     provider.add_span_processor(processor)
     # sets the global default tracer provider

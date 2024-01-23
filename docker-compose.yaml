@@ -6,7 +6,7 @@ services:
       - ./data:/app/data
     environment:
       - OTEL_EXPORTER_OTLP_ENDPOINT=http://collector:4317
-      - OTEL_EXPORTER_OTLP_JSON_HTTP_ENDPOINT=http://collector:4318
+      - OTEL_EXPORTER_OTLP_HTTP_ENDPOINT=http://collector:4318
       - OTEL_SERVICE_NAME=otel-python-example
       - OTEL_RESOURCE_ATTRIBUTES="service.version=1.0,deployment.environment=dev"
     depends_on:
@@ -17,9 +17,8 @@ services:
     volumes:
       - ./collector/collector.yml:/collector.yml
     command: ["--config=/collector.yml"]
-    environment:
-        - ELASTIC_APM_SERVER_ENDPOINT=${ELASTIC_APM_SERVER_ENDPOINT:?required}
-        - ELASTIC_APM_SERVER_SECRET=${ELASTIC_APM_SERVER_SECRET:?required}
+    env_file:
+        - .env
     ports:
       - "4317:4317"
       - "4318:4318"

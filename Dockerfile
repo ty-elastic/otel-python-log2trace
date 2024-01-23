@@ -17,4 +17,4 @@ COPY data/trace.csv ./
 
 ENV PYTHONUNBUFFERED=1
 
-ENTRYPOINT ["python", "file_tracing_via_otlp.py"]
+ENTRYPOINT ["python", "file_tracing_via_api.py"]
